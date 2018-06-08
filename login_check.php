@@ -65,7 +65,11 @@ try {
 
 
  <?php
-$stmt = $pdo->query("SELECT login_id,password FROM accounts WHERE login_id = '{$confirm_id}' AND password = '{$confirm_pass}'");
+$stmt = $pdo->prepare("SELECT login_id,password FROM accounts WHERE login_id = :confirm_id AND password = :confirm_pass");
+$stmt->bindParam(':confirm_id',$confirm_id);
+$stmt->bindParam(':confirm_pass',$confirm_pass);
+$stmt->execute();
+//var_dump($stmt);
 foreach ($stmt as $serch_values) {
   if (($serch_values['login_id'] == $confirm_id) && ($serch_values['password'] == $confirm_pass) ):
   //confirm_idとconfirm_passがDBにあった場合 ./welcome.phpにリダイレクト
